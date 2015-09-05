@@ -1,0 +1,38 @@
+---
+:ssh:
+  :desc: ssh to remote rails deploy root
+  :expect: |
+    spawn ssh -A %{gateway}
+    expect "Last login:"
+    send "ssh %{user}@%{host}\r"
+    while 1 {
+      expect {
+        "Are you sure you want to continue connecting (yes/no)?" {send "yes\r"}
+        "Last login:" {
+            send "alias l='ls -l'\r"
+            send "cd %{deploy_to}/current\r"
+            break
+        }
+      }
+    }
+    interact
+    exit 1
+:console:
+  :desc: run remote rails console
+  :expect: |
+    spawn ssh -A %{gateway}
+    expect "Last login:"
+    send "ssh %{user}@%{host}\r"
+    while 1 {
+      expect {
+        "Are you sure you want to continue connecting (yes/no)?" {send "yes\r"}
+        "Last login:" {
+            send "alias l='ls -l'\r"
+            send "cd %{deploy_to}/current\r"
+            break
+        }
+      }
+    }
+    send "ruby script/rails console production\r"
+    interact
+    exit 1

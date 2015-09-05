@@ -1,0 +1,96 @@
+@startuml
+
+class MrCommand {
+  .. RESPONSIBILITIES ..
+  knows registered menu actions
+}
+MrCommand -> Command.MrList
+MrCommand -> Command.MrDetails
+MrCommand -> Command.MrShell
+MrCommand -> Command.MrConsole
+
+
+class Command.MrList {
+  .. RESPONSIBILITIES ..
+  writes project capfiles
+}
+Command.MrList -> MrCapfiles
+
+
+class Command.MrDetails {
+  .. RESPONSIBILITIES ..
+  writes project capfile details
+}
+Command.MrDetails -> MrMenu
+
+
+class Command.MrShell {
+  .. RESPONSIBILITIES ..
+  runs shell in host:directory
+}
+Command.MrShell -> MrMenu
+Command.MrShell -> MrShellExpect
+Command.MrShell -> MrExpect
+
+
+class Command.MrConsole {
+  .. RESPONSIBILITIES ..
+  runs rails console to host:directory attribute
+  defaults rails console in safe mode
+}
+Command.MrConsole -> MrMenu
+Command.MrConsole -> MrRailsConsoleExpect
+Command.MrConsole -> MrExpect
+
+
+class MrRailsConsoleExpect {
+  .. RESPONSIBILITIES ..
+  assembles rails console expect script
+}
+MrShellExpect -> MrCapfileConfig
+
+
+class MrShellExpect {
+  .. RESPONSIBILITIES ..
+  assembles ssh shell expect script
+}
+MrShellExpect -> MrCapfileConfig
+
+
+class MrExpect {
+  .. RESPONSIBILITIES ..
+  launches the expect script rocket
+}
+MrShellExpect -> MrCapfileConfig
+
+
+class MrMenu {
+  .. RESPONSIBILITIES ..
+  writes menu of choices with default option
+  knows choice from passed param or menu choice
+}
+
+
+class MrCapfiles {
+  .. RESPONSIBILITIES ..
+  knows capfiles
+}
+
+class MrCapfile {
+  .. RESPONSIBILITIES ..
+  knows config path from capfile
+}
+
+
+class MrCapfileConfig  {
+  .. RESPONSIBILITIES ..
+  knows application
+  knows gateway
+  knows branch
+  knows deploy_to
+  knows roles
+  knows hosts
+}
+
+
+@enduml
