@@ -4,4 +4,8 @@ $:.unshift File.join(File.dirname(__FILE__), *%w[.. lib])
 
 require 'cap_expect'
 
-CapExpect::Commands.start(ARGV)
+begin
+  CapExpect::Commands.start(ARGV)
+rescue SystemExit, Interrupt
+
+end
