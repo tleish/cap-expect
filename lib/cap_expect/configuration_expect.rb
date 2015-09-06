@@ -1,7 +1,8 @@
 module CapExpect
   class ConfigurationExpect
-    def initialize(capfile)
+    def initialize(capfile, roles=nil)
       @capfile = capfile
+      @roles = roles
     end
 
     def variables
@@ -21,7 +22,7 @@ module CapExpect
     def configuration
       @configuration ||= begin
         configurations = CapExpect::Configuration.new.load(config_path)
-        CapExpect::Menu.new('Which host? ', configurations.index_by_host ).present
+        CapExpect::Menu.new('Which host? ', configurations.index_by_host(@roles) ).present
       end
     end
 

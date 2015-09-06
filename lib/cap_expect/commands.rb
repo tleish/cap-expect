@@ -41,7 +41,7 @@ module CapExpect
       next unless settings.is_a? Hash
       desc "#{method} [capfile]".freeze, (settings[:desc]+ '(print outputs the script)').freeze
       define_method(method) do |*capfile|
-        variables = ConfigurationExpect.new(capfile).variables
+        variables = ConfigurationExpect.new(capfile, settings[:roles]).variables
         CapExpect::Expect.new(variables, settings[:expect]).run
       end
     end

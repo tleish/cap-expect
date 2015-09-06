@@ -16,7 +16,8 @@ module CapExpect
     end
 
     # order = [:app, :web, :db]
-    def hosts(order = roles.keys)
+    def hosts(order = nil)
+      order ||= roles.keys
       hosts = Array(order).flat_map do |type|
         roles[type].map(&:host).reject(&:empty?)
       end

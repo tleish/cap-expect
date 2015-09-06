@@ -23,11 +23,11 @@ describe CapExpect::Capfiles do
   end
 
   def when_capfiles_are_requested_without_a_pattern
-    @capfiles = CapExpect::Capfiles.new ::Dir['capfile*']
+    @capfiles = CapExpect::Capfiles.new ::Dir.glob 'capfile*', File::FNM_CASEFOLD
   end
 
   def when_capfiles_are_requested_with_a_pattern
-    @capfiles = CapExpect::Capfiles.new @dir  ::Dir['capfile-*']
+    @capfiles = CapExpect::Capfiles.new @dir  ::Dir.glob 'capfile-*', File::FNM_CASEFOLD
   end
 
   def then_know_capfiles_in_directory_are(number)

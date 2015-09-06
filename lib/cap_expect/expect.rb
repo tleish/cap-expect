@@ -1,15 +1,13 @@
 module CapExpect
   class Expect
 
-    ESCAPE_SINGLE_QUOTES =  %('"'"').freeze
-
     def initialize(variables, script)
       @variables = variables
       @script = script
     end
 
     def run
-      expect_script_escaped = expect_script.gsub("'".freeze, ESCAPE_SINGLE_QUOTES)
+      expect_script_escaped = expect_script.gsub("'", %('"'"'))
       exec %Q(expect -c '#{ expect_script_escaped }')
     end
 

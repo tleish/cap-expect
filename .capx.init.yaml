@@ -19,6 +19,8 @@
     exit 1
 :console:
   :desc: run remote rails console
+  :roles:
+    - :app
   :expect: |
     spawn ssh -A %{gateway_root}
     expect "Last login:"

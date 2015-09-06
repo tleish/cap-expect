@@ -21,6 +21,7 @@ module CapExpect
 
     def menu
       return menu_choices.first if only_one_choice?
+      puts ''
       choose do |menu|
         menu.prompt = "\n#{@prompt} (default: 1. #{menu_choices.first})"
         menu.default = menu_choices.first
