@@ -2,7 +2,7 @@
 :ssh:
   :desc: ssh to remote rails deploy root
   :expect: |
-    spawn ssh -A %{gateway}
+    spawn ssh -A %{gateway_root}
     expect "Last login:"
     send "ssh %{user}@%{host}\r"
     while 1 {
@@ -20,7 +20,7 @@
 :console:
   :desc: run remote rails console
   :expect: |
-    spawn ssh -A %{gateway}
+    spawn ssh -A %{gateway_root}
     expect "Last login:"
     send "ssh %{user}@%{host}\r"
     while 1 {

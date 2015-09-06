@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
     raise "RubyGems 2.0 or newer is required to protect against public gem pushes."
   end
 
-  spec.files        = Dir.glob("{exe,lib}/**/*") + %w(README.md)
+  spec.files        = Dir.glob("{exe,lib}/**/*") + %w(README.md .capx.init.yaml)
   spec.bindir        = "exe"
   spec.executables   = Dir.glob("exe/*").map(&File.method(:basename))
   spec.require_path = 'lib'
