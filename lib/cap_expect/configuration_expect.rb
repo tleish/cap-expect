@@ -1,21 +1,25 @@
+require 'cap_expect/capfiles'
+require 'cap_expect/configuration'
+require 'cap_expect/menu'
+
 module CapExpect
+  # Context class combining CapExpect and Configuration
   class ConfigurationExpect
-    def initialize(capfile, roles=nil)
-      @capfile = capfile
+    def initialize(capfiles, roles=nil)
+      @capfiles = capfiles
       @roles = roles
     end
 
     def variables
       variables = configuration.choice_object.variables.dup
       variables[:host] = configuration.choice
-      eztract_ports(variables).merge(variables)
+      extract_ports(variables).merge(variables)
     end
 
     private
 
     def config_path
-      capfiles = CapExpect::Capfiles.new(@capfile)
-      capfile = CapExpect::Menu.new('Which capfile? ', capfiles.index_by(&:path) ).present
+      capfile = CapExpect::Menu.new('Which capfile? ', @capfiles.index_by(&:path) ).present
       capfile.choice_object.config_path
     end
 
@@ -32,7 +36,7 @@ module CapExpect
       port.to_i > 0
     end
 
-    def eztract_ports(variables)
+    def extract_ports(variables)
       hash = {}
       variables.each do |key, value|
         next unless has_port?(value)

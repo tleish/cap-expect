@@ -25,14 +25,16 @@ module CapExpect
 
     desc 'variables [capfile]'.freeze, 'show the capfile variables (short-cut alias: "v")'.freeze
     def variables(*capfile)
-      puts ConfigurationExpect.new(capfile).variables.to_yaml
+      capfiles = CapExpect::Capfiles.new(capfile)
+      puts ConfigurationExpect.new(capfiles).variables.to_yaml
     end
 
     desc 'print [capfile]'.freeze, 'show expect command output (short-cut alias: "p")'.freeze
     def print(*capfile)
       expects = CapExpect.settings.inject({}) { |hash, (method, setting)| hash[method] = setting; hash }
       option = CapExpect::Menu.new('Which expect? ', expects ).present
-      variables = ConfigurationExpect.new(capfile).variables
+      capfiles = CapExpect::Capfiles.new(capfile)
+      variables = ConfigurationExpect.new(capfiles).variables
       CapExpect::Expect.new(variables, option.choice_object[:expect]).print
     end
 
@@ -41,7 +43,8 @@ module CapExpect
       next unless settings.is_a? Hash
       desc "#{method} [capfile]".freeze, (settings[:desc]+ '(print outputs the script)').freeze
       define_method(method) do |*capfile|
-        variables = ConfigurationExpect.new(capfile, settings[:roles]).variables
+        capfiles = CapExpect::Capfiles.new(capfile)
+        variables = ConfigurationExpect.new(capfiles, settings[:roles]).variables
         CapExpect::Expect.new(variables, settings[:expect]).run
       end
     end

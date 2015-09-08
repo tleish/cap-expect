@@ -10,7 +10,7 @@ module CapExpect
 
     def load
       @settings ||= begin
-        capex = load_settings(FILE) || load_settings(HOME_PATH)
+        capex = load_settings(FILE).merge load_settings(HOME_PATH)
         capex || {}
       end
     end
@@ -18,7 +18,7 @@ module CapExpect
     private
 
     def load_settings(path)
-      return unless File.exist? path
+      return {} unless File.exist? path
       ::YAML.load_file(path)
     end
 
