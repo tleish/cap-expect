@@ -6,46 +6,36 @@ require 'cap_expect/menu'
 require 'cap_expect/configuration_expect'
 require 'cap_expect/capfiles_menu'
 
+Dir[File.expand_path('../commands/*.rb', __FILE__) ].each {|file| require file }
 
 module CapExpect
   class Commands < Thor
 
     desc 'init'.freeze, "creates a #{CapExpect::Settings::FILE} file in the working directory".freeze
     def init
-      return puts "#{CapExpect::Settings::FILE} already exists" if File.exist? CapExpect::Settings::FILE
-      FileUtils.cp(CapExpect::Settings::FILE_TEMPLATE, CapExpect::Settings::FILE)
-      puts "Created #{File.expand_path CapExpect::Settings::FILE}"
+      CapExpect::Commands::Init.new
     end
 
     desc 'list'.freeze, 'list the capfiles in the current directory (short-cut alias: "l")'.freeze
     def list(*capfile)
-      capfiles = CapExpect::Capfiles.new(capfile)
-      puts capfiles.paths.to_yaml
+      CapExpect::Commands::List.new(*capfile).print
     end
 
     desc 'variables [capfile]'.freeze, 'show the capfile variables (short-cut alias: "v")'.freeze
     def variables(*capfile)
-      capfiles = CapExpect::Capfiles.new(capfile)
-      puts ConfigurationExpect.new(capfiles).variables.to_yaml
+      CapExpect::Commands::Variables.new(*capfile).print
     end
 
     desc 'print [capfile]'.freeze, 'show expect command output (short-cut alias: "p")'.freeze
     def print(*capfile)
-      expects = CapExpect.settings.inject({}) { |hash, (method, setting)| hash[method] = setting; hash }
-      option = CapExpect::Menu.new('Which expect? ', expects ).present
-      capfiles = CapExpect::Capfiles.new(capfile)
-      variables = ConfigurationExpect.new(capfiles).variables
-      CapExpect::Expect.new(variables, option.choice_object[:expect]).print
+      CapExpect::Commands::Print.new(*capfile).print
     end
 
     # Build dynamic expect scripts
-    CapExpect.settings.each do |method, settings|
-      next unless settings.is_a? Hash
-      desc "#{method} [capfile]".freeze, (settings[:desc]+ '(print outputs the script)').freeze
+    CapExpect.settings.each do |method, setting|
+      desc "#{method} [capfile]".freeze, (setting[:desc]+ '(print outputs the script)').freeze
       define_method(method) do |*capfile|
-        capfiles = CapExpect::Capfiles.new(capfile)
-        variables = ConfigurationExpect.new(capfiles, settings[:roles]).variables
-        CapExpect::Expect.new(variables, settings[:expect]).run
+        CapExpect::Commands::Custom.new(setting, *capfile).run
       end
     end
 

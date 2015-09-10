@@ -4,12 +4,11 @@ require 'cap_expect/configuration'
 
 module CapExpect
 
-  # class << self
-  #   attr_writer :settings
-  # end
-
   def self.settings
-    @settings ||= CapExpect::Settings.new.load
+    @settings ||= begin
+      CapExpect::Settings.new.load.
+        select{|_, setting| setting.is_a? Hash}
+    end
   end
 
   def self.root
