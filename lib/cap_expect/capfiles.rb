@@ -14,7 +14,7 @@ module CapExpect
 
     def each(&block)
       @paths.each do |path|
-        block.call( Capfile.new path )
+        block.call(Capfile.new path)
       end
     end
 

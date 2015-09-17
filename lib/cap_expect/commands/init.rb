@@ -1,6 +1,7 @@
 class CapExpect::Commands < Thor; end
 
 module CapExpect
+  # create .capx.yml file in current directory if it doesn't exist
   class Commands::Init
 
     FILE_PATH = File.expand_path CapExpect::Settings::FILE

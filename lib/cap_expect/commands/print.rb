@@ -4,6 +4,7 @@ require 'forwardable'
 class CapExpect::Commands < Thor; end
 
 module CapExpect
+  # helper to print expect script to terminal
   class Commands::Print
 
     extend Forwardable
@@ -21,12 +22,14 @@ module CapExpect
     end
 
     def expect
-      option = CapExpect::Menu.new('Which expect? ', expects ).present
+      option = CapExpect::Menu.new('Which expect? ', expects).present
       option.choice_object[:expect]
     end
 
     def expects
-      CapExpect.settings.inject({}) { |hash, (method, setting)| hash[method] = setting; hash }
+      CapExpect.settings.each_with_object({}) do |(method, setting), hash|
+        hash[method] = setting
+      end
     end
 
   end

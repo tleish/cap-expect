@@ -5,7 +5,7 @@ require 'cap_expect/menu'
 module CapExpect
   # Context class combining CapExpect and Configuration
   class ConfigurationExpect
-    def initialize(capfiles, roles=nil)
+    def initialize(capfiles, roles = nil)
       @capfiles = capfiles
       @roles = roles
     end
@@ -19,18 +19,18 @@ module CapExpect
     private
 
     def config_path
-      capfile = CapExpect::Menu.new('Which capfile? ', @capfiles.index_by(&:path) ).present
+      capfile = CapExpect::Menu.new('Which capfile? ', @capfiles.index_by(&:path)).present
       capfile.choice_object.config_path
     end
 
     def configuration
       @configuration ||= begin
         configurations = CapExpect::Configuration.new.load(config_path)
-        CapExpect::Menu.new('Which host? ', configurations.index_by_host(@roles) ).present
+        CapExpect::Menu.new('Which host? ', configurations.index_by_host(@roles)).present
       end
     end
 
-    def has_port?(value)
+    def port?(value)
       return unless value.is_a? String
       _, port = value.split(':')
       port.to_i > 0
@@ -39,7 +39,7 @@ module CapExpect
     def extract_ports(variables)
       hash = {}
       variables.each do |key, value|
-        next unless has_port?(value)
+        next unless port?(value)
         hash["#{key}_root".to_sym], hash["#{key}_port".to_sym] = value.split(':')
       end
       hash

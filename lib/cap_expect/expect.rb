@@ -8,7 +8,7 @@ module CapExpect
 
     def run
       expect_script_escaped = expect_script.gsub("'", %('"'"'))
-      exec %Q(expect -c '#{ expect_script_escaped }')
+      exec %(expect -c '#{ expect_script_escaped }')
     end
 
     def print

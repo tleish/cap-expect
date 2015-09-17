@@ -26,7 +26,7 @@ module CapExpect
 
     def index_by_host(order = roles.keys)
       hosts(order).each_with_object({}) do |host, hash|
-       hash[host] = self
+        hash[host] = self
       end
     end
 

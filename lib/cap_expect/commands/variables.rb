@@ -4,6 +4,7 @@ require_relative '../configuration_expect'
 class CapExpect::Commands < Thor; end
 
 module CapExpect
+  # helper to list variables that are available in capfile
   class Commands::Variables
     def initialize(*capfile)
       @capfiles = CapExpect::Capfiles.new(capfile)

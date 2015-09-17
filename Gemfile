@@ -19,4 +19,5 @@ group :development, :test do
   gem 'pry-clipboard'
   gem 'pry-stack_explorer'
   gem 'hirb'
+  gem 'rubocop'
 end

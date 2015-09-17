@@ -6,7 +6,7 @@ require 'cap_expect/menu'
 require 'cap_expect/configuration_expect'
 require 'cap_expect/capfiles_menu'
 
-Dir[File.expand_path('../commands/*.rb', __FILE__) ].each {|file| require file }
+Dir[File.expand_path('../commands/*.rb', __FILE__)].each { |file| require file }
 
 module CapExpect
   class Commands < Thor
@@ -33,7 +33,7 @@ module CapExpect
 
     # Build dynamic expect scripts
     CapExpect.settings.each do |method, setting|
-      desc "#{method} [capfile]".freeze, (setting[:desc]+ '(print outputs the script)').freeze
+      desc "#{method} [capfile]".freeze, (setting[:desc] + '(print outputs the script)').freeze
       define_method(method) do |*capfile|
         CapExpect::Commands::Custom.new(setting, *capfile).run
       end

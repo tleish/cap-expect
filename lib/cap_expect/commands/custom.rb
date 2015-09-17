@@ -4,6 +4,7 @@ require 'forwardable'
 class CapExpect::Commands < Thor; end
 
 module CapExpect
+  # using settings, creates custom expect scripts
   class Commands::Custom
 
     extend Forwardable
