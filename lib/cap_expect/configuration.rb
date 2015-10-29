@@ -1,9 +1,9 @@
-gem 'capistrano', '~> 2.14.2'
+gem 'capistrano', '~> 3.4.0'
 require 'capistrano/configuration'
 
 module CapExpect
   # Parse a capfile and return configuration variables
-  class Configuration < Capistrano::Configuration
+  class Configuration < ::Capistrano::Configuration
 
     NULL_CONFIG = %(set :application, 'missing'\nrole :none, '')
     VARIABLES_AND_ROLES_REGEX = /^\s*(?:set|role) (?:.+\n)+/m

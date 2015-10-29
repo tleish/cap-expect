@@ -5,7 +5,7 @@ describe CapExpect::Capfiles do
   it "Can get all capfiles in a directory" do
     given_capfiles_in_a_directory
     when_capfiles_are_requested_without_a_pattern
-    then_know_capfiles_in_directory_are 2
+    then_know_capfiles_in_directory_are 3
       and_list_each_capfile
       and_index_by_capfile
   end
@@ -23,7 +23,7 @@ describe CapExpect::Capfiles do
   end
 
   def when_capfiles_are_requested_without_a_pattern
-    @capfiles = CapExpect::Capfiles.new ::Dir.glob 'capfile*', File::FNM_CASEFOLD
+    @capfiles = CapExpect::Capfiles.new([]) #::Dir.glob 'capfile*', File::FNM_CASEFOLD
   end
 
   def when_capfiles_are_requested_with_a_pattern
@@ -40,7 +40,7 @@ describe CapExpect::Capfiles do
   end
 
   def and_index_by_capfile
-    @capfiles.index_by(&:path).keys.must_equal %w[Capfile capfile-old]
+    @capfiles.index_by(&:path).keys.must_equal %w[Capfile capfile-old config/deploy/main.rb]
   end
 
 end

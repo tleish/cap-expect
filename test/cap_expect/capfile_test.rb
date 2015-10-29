@@ -8,6 +8,12 @@ describe CapExpect::Capfile do
     then_know_configuration_path_is 'config/deploy.rb'
   end
 
+  it "Can get config path from capfile capistrano 3 format" do
+    given_a_capfile_exists_in_a_directory
+    when_capfile_requested_is 'main'
+    then_know_configuration_path_is 'config/deploy/main.rb'
+  end
+
   it "Return empty config path invalid capfile" do
     given_a_capfile_exists_in_a_directory
     when_capfile_requested_is 'na'
