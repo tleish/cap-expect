@@ -2,8 +2,8 @@ require_relative '../test_helper'
 require 'cap_expect/configuration'
 
 describe CapExpect::Configuration do
-  it "Can parse a capfile" do
-    given_a_configuration 'config/deploy.rb'
+  it "Can parse a capistrano 3 file" do
+    given_a_configuration 'config/deploy/main.rb'
     when_the_configuration_is_loaded
     then_know_the_configuration(
         application: 'my app',
@@ -17,7 +17,22 @@ describe CapExpect::Configuration do
     and_ensure_hosts_are_uniq
   end
 
-  it "Can parse older capistrano files with missing attributes" do
+  it "Can parse a capistrano 2 file" do
+    given_a_configuration 'config/deploy.rb'
+    when_the_configuration_is_loaded
+    then_know_the_configuration(
+      application: 'my app',
+      gateway: '1.2.3.4:22',
+      branch: 'master',
+      deploy_to: '/this/is/my/path',
+      hosts: 6,
+      app_hosts: 4
+    )
+    and_order_hosts
+    and_ensure_hosts_are_uniq
+  end
+
+  it "Can parse older capistrano 2 files with missing attributes" do
     given_a_configuration 'config/deploy-old.rb'
     when_the_configuration_is_loaded
     then_know_the_configuration(
@@ -64,7 +79,7 @@ describe CapExpect::Configuration do
     @config.variables[:deploy_to].must_equal variables[:deploy_to]
     @config.roles.must_be_instance_of Hash
     @config.hosts.length.must_equal variables[:hosts]
-    @config.roles[:app].map(&:host).length.must_equal variables[:app_hosts]
+    @config.roles[:app].map(&:hostname).length.must_equal variables[:app_hosts] if @config.roles[:app]
   end
 
   def and_order_hosts
