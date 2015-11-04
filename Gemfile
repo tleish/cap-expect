@@ -5,7 +5,7 @@ gemspec
 
 gem 'thor', '~> 0.19.0'
 gem 'highline', '~> 1.7.1'
-gem 'capistrano', '~> 2.14.2', require: false
+gem 'capistrano', '~> 3.4.0', require: false
 
 group :test do
   gem 'minitest'

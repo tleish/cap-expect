@@ -5,11 +5,11 @@ module CapExpect
   class Capfiles
     include Enumerable
 
-    DEFAULT_PATTERN = 'capfile*'
+    DEFAULT_PATTERN = ['capfile*','config/deploy/*.rb']
     attr_reader :paths
 
     def initialize(paths)
-      @paths = Array(paths).empty? ? ::Dir[DEFAULT_PATTERN] : Array(paths)
+      @paths = Array(paths).empty? ? ::Dir[*DEFAULT_PATTERN] : Array(paths)
     end
 
     def each(&block)

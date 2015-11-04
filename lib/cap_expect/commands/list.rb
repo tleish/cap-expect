@@ -10,7 +10,7 @@ module CapExpect
     end
 
     def print
-      puts @capfiles.paths.to_yaml
+      puts @capfiles.paths.map{ |path| File.basename(path, '.rb') }.to_yaml
     end
   end
 end
