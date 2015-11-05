@@ -11,17 +11,21 @@ module CapExpect
 
     def config_path
       @config_path ||= begin
-        config_path_from_capfile || default_config_path || ''
+        default_config_path || capfile_config_path || ''
       end
     end
 
     private
 
-    def config_path_from_capfile
-      return unless File.exist? @path
-      file = File.open(@path, 'rb').read
-               .scan(CONFIG_FILE_PATH_REGEX).first
-      File.join(file + '.rb')
+    def capfile_config_path
+      path = File.join(get_path_from_capfile + '.rb')
+      return unless File.exist?(path)
+      path
+    end
+
+    def get_path_from_capfile
+      return '' unless File.exist? @path
+      File.open(@path, 'rb').read.scan(CONFIG_FILE_PATH_REGEX).first || ''
     end
 
     def default_config_path
