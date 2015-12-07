@@ -60,8 +60,11 @@ module CapExpect
       %w{default_run_options ssh_options}.each { |var| set var.to_sym, {} if content.include?(var) }
     end
 
-    # Capistrano 2: handle interpolated variables
-    alias_method :method_missing, :fetch
+    # # Capistrano 2: handle old methods
+    def method_missing(name, *args, &block)
+      return nil unless args.length == 2
+      fetch(*args, &block)
+    end
 
     private
 
@@ -73,6 +76,7 @@ module CapExpect
           .gsub(REQUIRES_REGEX, '') || ''
       end
     end
+
 
   end
 end
